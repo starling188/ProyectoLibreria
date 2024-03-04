@@ -22,5 +22,10 @@ namespace CapaNegocio.Service
         {
             return await _use.AutenticarUsuario(correo,contraseña);
         }
+
+        public async Task<bool> RegistrarUsuario(Usuario nuevoUsuario)
+        {
+            return await _use.RegistrarUsuario(nuevoUsuario);
+        }
     }
 }

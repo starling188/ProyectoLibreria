@@ -1,5 +1,6 @@
 ﻿using CapaNegocio.Service;
 using Microsoft.AspNetCore.Mvc;
+using SGBL.Models;
 
 namespace SGBL.Controllers
 {
@@ -46,5 +47,46 @@ namespace SGBL.Controllers
                 return View();
             }
         }
+
+
+
+        public IActionResult Registro() { 
+        
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registro(ViewModelUser viewModelUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var nuevoUsuario = new CapaDatos.DataContext.Usuario
+                {
+                    Nombre = viewModelUser.Nombre,
+                    Apellido = viewModelUser.Apellido,
+                    Correo = viewModelUser.Correo,
+                    Contraseña = viewModelUser.Password
+                };
+
+                var registroExitoso = await _use.RegistrarUsuario(nuevoUsuario);
+
+                if (registroExitoso)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Hubo un error al registrar el usuario.");
+                }
+            }
+
+            return View("Registro");
+        }
     }
+
+        
+
 }
+
+
+

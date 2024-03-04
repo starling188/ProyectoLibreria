@@ -10,5 +10,7 @@ namespace CapaDatos.repositorio
     public interface InterfaceUsuario
     {
         Task<Usuario> AutenticarUsuario(string correo, string contraseña);
+
+        Task<bool> RegistrarUsuario(Usuario nuevoUsuario);
     }
 }

@@ -14,16 +14,27 @@
     <h2>Iniciar sesión</h2>
 
     <form asp-controller="Login" asp-action="Index" method="post">
+        <!-- Email input -->
         <div class="form-group">
             <label for="correo">Correo electrónico:</label>
             <input type="email" class="form-control" id="correo" name="correo" required>
         </div>
+
+        <!-- Password input -->
         <div class="form-group">
             <label for="contraseña">Contraseña:</label>
             <input type="password" class="form-control" id="contraseña" name="contraseña" required>
         </div>
-        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Iniciar sesión</button>
+
+        <!-- Register link -->
+        <div class="text-center">
+            <p>Not a member? <a href="/Login/Registro">Register</a></p>
+        </div>
     </form>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

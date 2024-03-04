@@ -43,5 +43,20 @@ namespace CapaDatos.repositorio
             }
         }
 
+        public async Task<bool> RegistrarUsuario(Usuario nuevoUsuario)
+        {
+            try
+            {
+                _con.Usuarios.Add(nuevoUsuario);
+                await _con.SaveChangesAsync();
+                return true;
+
+            }
+
+            catch (Exception ex) {
+                Console.WriteLine($"Error al registrar usuario: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
