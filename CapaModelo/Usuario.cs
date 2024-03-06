@@ -15,6 +15,10 @@ public partial class Usuario
 
     public string? Contraseña { get; set; }
 
+    public int IdRol { get; set; } 
+
+    public virtual Rol? Rol { get; set; } 
+
     public DateTime? FechaRegistro { get; set; }
 
     public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();

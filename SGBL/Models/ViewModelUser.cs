@@ -29,5 +29,7 @@ namespace SGBL.Models
         [Required(ErrorMessage = "La contraseña es requerida.")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
+
+        public int Rol { get; set; } = 2;
     }
 }

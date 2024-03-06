@@ -12,5 +12,7 @@ namespace CapaDatos.repositorio
         Task<Usuario> AutenticarUsuario(string correo, string contraseña);
 
         Task<bool> RegistrarUsuario(Usuario nuevoUsuario);
+
+        Task<string> HashearContraseña(string contraseña);
     }
 }

@@ -35,7 +35,15 @@ public partial class LibreriaTiendaContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+
+        if (!optionsBuilder.IsConfigured)
+        {
+            // Configuración del proveedor de base de datos aquí (por ejemplo, SQL Server, SQLite, etc.)
+            optionsBuilder.UseSqlServer("Server=STARLING\\SQLEXPRESS;Database=LibreriaTienda;Integrated Security=true;TrustServerCertificate=true");
+        }
+
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

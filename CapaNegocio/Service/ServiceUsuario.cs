@@ -20,6 +20,7 @@ namespace CapaNegocio.Service
 
         public async Task<Usuario> AutenticarUsuario(string correo, string contraseña)
         {
+
             return await _use.AutenticarUsuario(correo,contraseña);
         }
 

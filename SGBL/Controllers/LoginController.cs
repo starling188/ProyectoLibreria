@@ -13,7 +13,7 @@ namespace SGBL.Controllers
             _use = use;   
         }
 
-
+        
         public IActionResult Index()
         {
             return View();
@@ -65,8 +65,14 @@ namespace SGBL.Controllers
                     Nombre = viewModelUser.Nombre,
                     Apellido = viewModelUser.Apellido,
                     Correo = viewModelUser.Correo,
-                    Contraseña = viewModelUser.Password
+                    Contraseña = viewModelUser.Password,
+                    IdRol = viewModelUser.Rol
+                    
+                    
+                    
                 };
+
+                
 
                 var registroExitoso = await _use.RegistrarUsuario(nuevoUsuario);
 

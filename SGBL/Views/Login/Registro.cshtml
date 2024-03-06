@@ -11,8 +11,49 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .form-control {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
+
+        .card {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .font-weight-bold {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
     </style>
 </head>
 <body>
@@ -21,35 +62,35 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title text-center">Registro de Usuario</h2>
+                        <h2 class="card-title">Registro de Usuario</h2>
                         <form asp-controller="Login" asp-action="Registro" method="post">
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group">
                                 <label asp-for="Nombre" class="font-weight-bold">Nombre</label>
-                                <input asp-for="Nombre" class="form-control" />
+                                <input asp-for="Nombre" class="form-control" placeholder="Ingrese su nombre" />
                                 <span asp-validation-for="Nombre" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Apellido" class="font-weight-bold">Apellido</label>
-                                <input asp-for="Apellido" class="form-control" />
+                                <input asp-for="Apellido" class="form-control" placeholder="Ingrese su apellido" />
                                 <span asp-validation-for="Apellido" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Correo" class="font-weight-bold">Correo Electrónico</label>
-                                <input asp-for="Correo" class="form-control" />
+                                <input asp-for="Correo" class="form-control" placeholder="Ingrese su correo electrónico" />
                                 <span asp-validation-for="Correo" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Password" class="font-weight-bold">Contraseña</label>
-                                <input asp-for="Password" type="password" class="form-control" />
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Ingrese su contraseña" />
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="ConfirmPassword" class="font-weight-bold">Confirmar Contraseña</label>
-                                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirme su contraseña" />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+                            <button type="submit" class="btn btn-primary btn-block" onclick="mostrarAlerta()">Registrarse</button>
                             <a href="@Url.Action("Index", "Login")" class="btn btn-secondary btn-block mt-3">Volver al inicio de sesión</a>
                         </form>
                     </div>
@@ -57,5 +98,11 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function mostrarAlerta() {
+            alert("¡Gracias por registrarte!");
+        }
+    </script>
 </body>
 </html>
