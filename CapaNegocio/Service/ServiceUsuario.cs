@@ -10,6 +10,7 @@ namespace CapaNegocio.Service
 {
     public class ServiceUsuario : IServiceUsuario
     {
+        //logica
 
         private readonly InterfaceUsuario _use;
 
