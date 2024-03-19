@@ -2,6 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SGBL.Models;
 
+
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+
+
 namespace SGBL.Controllers
 {
     public class LoginController : Controller
@@ -34,18 +40,27 @@ namespace SGBL.Controllers
             // Autenticar al usuario
             var usuario = await _use.AutenticarUsuario(correo, contraseña);
 
-            // Verificar si se encontró el usuario
             if (usuario != null)
             {
+                var nombreRol = await _use.ObtenerNombreRol(usuario.IdRol);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, usuario.Nombre),
+                    new Claim("Correo", usuario.Correo),
+                    new Claim(ClaimTypes.Role, nombreRol),
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
                 // Si el usuario es válido, redirigir al index del Home
                 return RedirectToAction("Index", "Home");
             }
-            else
-            {
-                // Si el usuario no es válido, agregar un error de modelo y volver a la vista de login
-                ModelState.AddModelError(string.Empty, "El correo electrónico o la contraseña son incorrectos.");
-                return View();
-            }
+
+            return View();
         }
 
 
@@ -87,6 +102,13 @@ namespace SGBL.Controllers
             }
 
             return View("Registro");
+        }
+
+        public async Task<IActionResult> Salir()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index");
         }
     }
 

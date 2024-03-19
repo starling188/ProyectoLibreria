@@ -29,5 +29,12 @@ namespace CapaNegocio.Service
         {
             return await _use.RegistrarUsuario(nuevoUsuario);
         }
+
+        public async Task<string> ObtenerNombreRol(int idRol)
+        {
+            return await _use.ObtenerNombreRol(idRol);
+        }
+
+
     }
 }

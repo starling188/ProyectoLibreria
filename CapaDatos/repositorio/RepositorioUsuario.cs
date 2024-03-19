@@ -90,5 +90,29 @@ namespace CapaDatos.repositorio
             // Comparar los hashes
             return hashIngresado == hashAlmacenado;
         }
+
+        public async Task<string> ObtenerNombreRol(int idRol)
+        {
+            try
+            {
+                // Buscar el rol por IdRol
+                var rol = await _con.Rols.FirstOrDefaultAsync(r => r.IdRol == idRol);
+
+                // Verificar si se encontró el rol
+                if (rol != null)
+                {
+                    return rol.Nombre; // Devolver el nombre del rol
+                }
+
+                // Si no se encontró el rol, devolver null
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción aquí (opcional)
+                Console.WriteLine($"Error al obtener el nombre del rol: {ex.Message}");
+                return null;
+            }
+        }
     }
 }

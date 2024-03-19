@@ -1,8 +1,87 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<CapaDatos.DataContext.Libro>
+
+@{
+    ViewData["Title"] = "Lista de Libros";
+    var isAdmin = User.IsInRole("Admin");
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/styles.css" /> <!-- Agrega el archivo CSS externo -->
+    <script>
+        // Función para mostrar u ocultar los botones según el rol del usuario
+        function mostrarBotonesSegunRol(isAdmin) {
+            var tarjetasLibro = document.querySelectorAll(".card"); // Seleccionar todas las tarjetas de libros
+
+            tarjetasLibro.forEach(function (tarjeta) {
+                var botones = tarjeta.querySelectorAll(".btn-group"); // Seleccionar todos los grupos de botones en la tarjeta
+                botones.forEach(function (boton) {
+                    // Mostrar u ocultar los botones según el rol del usuario
+                    boton.style.display = isAdmin ? "block" : "none";
+                });
+            });
+        }
+
+        // Llamar a la función cuando la página haya cargado completamente
+        window.onload = function () {
+            mostrarBotonesSegunRol(@isAdmin.ToString().ToLower());
+        };
+    </script>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <h1>Lista de Libros</h1>
+
+        <div class="mb-4">
+            <!-- Barra de búsqueda -->
+            <form method="post" action="@Url.Action("Buscar", "Home")">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar libros" name="criterio" aria-label="Buscar libros" aria-describedby="button-buscar">
+                    <div class="input-group-append mr-4">
+                        <!-- Añadir margen derecho -->
+                        <button class="btn btn-primary" type="submit" id="button-buscar">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            @if (Model == null || Model.Count == 0)
+            {
+                <h2>No hay libros disponibles.</h2>
+            }
+            else
+            {
+                @foreach (var libro in Model)
+                {
+                    <div class="col-4 mb-4">
+                        <div class="card shadow-sn">
+                            <div class="card-body">
+                                <h5 class="card-title">@libro.Titulo</h5>
+                                <p class="card-text">Autor: @(libro.IdAutorNavigation != null ? libro.IdAutorNavigation.Nombre : "Desconocido")</p>
+                                <p class="card-text">Género: @(libro.IdGeneroNavigation != null ? libro.IdGeneroNavigation.Nombre : "Desconocido")</p>
+                                <p class="card-text">Palabras Clave: @(string.IsNullOrEmpty(libro.PalabrasClave) ? "N/A" : libro.PalabrasClave)</p>
+                                <p class="card-text">Sinopsis: @(string.IsNullOrEmpty(libro.Sinopsis) ? "N/A" : libro.Sinopsis)</p>
+                                <p class="card-text">Disponibilidad: @(libro.Disponibilidad.HasValue ? (libro.Disponibilidad.Value ? "Si" : "No Disponible") : "N/A")</p>
+
+                                <div class="mt-2 btn-group" role="group" aria-label="Botones" style="display: none;">
+                                    <!-- Establecer inicialmente los botones como ocultos -->
+                                    <button type="button" class="btn btn-danger mr-1">Eliminar</button>
+                                    <button type="button" class="btn btn-primary">Editar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</body>
+</html>

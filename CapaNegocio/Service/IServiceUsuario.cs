@@ -12,5 +12,6 @@ namespace CapaNegocio.Service
         Task<Usuario> AutenticarUsuario(string correo, string contraseña);
 
         Task<bool> RegistrarUsuario(Usuario nuevoUsuario);
+        Task<string> ObtenerNombreRol(int idRol);
     }
 }
