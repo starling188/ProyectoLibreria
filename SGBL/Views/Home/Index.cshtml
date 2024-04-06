@@ -30,7 +30,40 @@
         // Llamar a la función cuando la página haya cargado completamente
         window.onload = function () {
             mostrarBotonesSegunRol(@isAdmin.ToString().ToLower());
+
+            // Manejar clic en el botón Eliminar
+            var botonesEliminar = document.querySelectorAll(".btn-danger");
+            botonesEliminar.forEach(function (boton) {
+                boton.addEventListener("click", function () {
+                    var libroId = this.getAttribute("data-id"); // Obtener el ID del libro
+                    eliminarLibro(libroId); // Llamar a la función para eliminar el libro
+                });
+            });
         };
+
+        // Función para eliminar un libro
+        function eliminarLibro(libroId) {
+            // Enviar una solicitud al servidor para eliminar el libro con el ID especificado
+            fetch('@Url.Action("EliminarLibros", "Home")?Idlibro=' + libroId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Actualizar la vista si la solicitud se realizó con éxito
+                        window.location.reload();
+                    } else {
+                        // Manejar errores si la solicitud no se realizó con éxito
+                        console.error('Error al eliminar el libro');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        }
+
     </script>
 </head>
 <body>
@@ -72,8 +105,8 @@
 
                                 <div class="mt-2 btn-group" role="group" aria-label="Botones" style="display: none;">
                                     <!-- Establecer inicialmente los botones como ocultos -->
-                                    <button type="button" class="btn btn-danger mr-1">Eliminar</button>
-                                    <button type="button" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-danger mr-1" data-id="@libro.IdLibro">Eliminar</button>
+                                    <button type="button" class="btn btn-primary" data-id="@libro.IdLibro">Editar</button>
                                 </div>
                             </div>
                         </div>

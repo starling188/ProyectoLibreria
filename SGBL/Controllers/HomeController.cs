@@ -48,9 +48,6 @@ namespace SGBL.Controllers
 
 
 
-
-
-
         public IActionResult Privacy()
         {
             return View();
@@ -177,8 +174,22 @@ namespace SGBL.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EliminarLibros(int Idlibro)
+        {
+            bool Eliminarlibro = await _ser.EliminarLibro(Idlibro);
 
-        
+            if (Eliminarlibro)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", new { error = "Hubo un error al eliminar el libro." });
+            }
+        }
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
