@@ -40,7 +40,17 @@
                             </li>
                         }
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LibrosRentados">Rentados</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Salir">Salir</a>
+                        </li>
+                    </ul>
+
+                    <!-- Bloque para mostrar el nombre del usuario -->
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <span class="nav-link text-dark">Bienvenido, @User.Identity.Name!</span>
                         </li>
                     </ul>
                 </div>

@@ -15,5 +15,7 @@ namespace CapaDatos.repositorio
         Task<bool> AgregarAutor(Autor autor);
         Task<bool> ActualizarAutor(Autor autor);
         Task<bool> EliminarAutor(int id);
+
+
     }
 }

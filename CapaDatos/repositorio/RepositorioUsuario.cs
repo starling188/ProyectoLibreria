@@ -114,5 +114,11 @@ namespace CapaDatos.repositorio
                 return null;
             }
         }
+
+        public async Task<Usuario> ObtenerUsuarioPorNombre(string nombreUsuario)
+        {
+            // Buscar el usuario por su nombre de usuario en la base de datos
+            return await _con.Usuarios.FirstOrDefaultAsync(u => u.Nombre == nombreUsuario);
+        }
     }
 }

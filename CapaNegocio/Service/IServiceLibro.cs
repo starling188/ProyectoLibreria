@@ -15,7 +15,8 @@ namespace CapaNegocio.Service
         Task<bool> AgregarLibro(Libro libro);
         Task<bool> ActualizarLibro(Libro libro);
         Task<bool> EliminarLibro(int id);
-        
+
+  
         Task<List<Libro>> BuscarLibros(string criterio);
 
     }

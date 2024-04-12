@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SGBL.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace SGBL.Controllers
 {
@@ -14,14 +15,15 @@ namespace SGBL.Controllers
         private readonly IServiceLibro _ser;
         private readonly IServiceGenero _serviceGenero;
         private readonly IServiceAutor _serviceAutor;
+        private readonly IServicePrestamos _servicePrestamos;
 
-
-        public HomeController(ILogger<HomeController> logger, IServiceLibro serviceLibro, IServiceGenero serviceGenero, IServiceAutor serviceAutor)
+        public HomeController(ILogger<HomeController> logger, IServiceLibro serviceLibro, IServiceGenero serviceGenero, IServiceAutor serviceAutor, IServicePrestamos servicePrestamos)
         {
             _logger = logger;
             _ser = serviceLibro;
             _serviceGenero = serviceGenero;
             _serviceAutor = serviceAutor;
+           _servicePrestamos = servicePrestamos;
         }
 
         public async Task<IActionResult> Index()
@@ -30,6 +32,8 @@ namespace SGBL.Controllers
             return View(libros);
         }
 
+
+        //Buscar
         [HttpPost]
         public async Task<IActionResult> Buscar(string criterio)
         {
@@ -188,6 +192,122 @@ namespace SGBL.Controllers
                 return RedirectToAction("Index", new { error = "Hubo un error al eliminar el libro." });
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> LibrosRentados()
+        {
+            // Obtener el nombre de usuario del Claim
+            var nombreUsuario = User.Identity.Name;
+
+            // Obtener el ID de usuario utilizando el servicio ServicePrestamos
+            int? idUsuario = await _servicePrestamos.ObtenerIdUsuarioPorNombre(nombreUsuario);
+
+            if (idUsuario.HasValue)
+            {
+                // Obtener los ID de los libros rentados por el usuario con estado "Prestado"
+                var idLibrosRentados = await _servicePrestamos.ObtenerIdLibrosRentadosPorUsuario(idUsuario.ToString());
+
+                // Obtener los detalles de los libros rentados utilizando los ID obtenidos
+                var librosRentados = new List<RentasViewModel>();
+                foreach (var idLibro in idLibrosRentados)
+                {
+                    // Utilizar el servicio de libros para obtener los detalles del libro por su ID
+                    var libro = await _ser.ObtenerPorId(idLibro);
+                    if (libro != null)
+                    {
+                        // Mapear el libro al ViewModel RentasViewModel
+                        var rentaViewModel = new RentasViewModel
+                        {
+                            
+                            IdLibro = libro.IdLibro,
+                            Titulo = libro.Titulo
+                            // Puedes mapear más propiedades si es necesario
+                        };
+                        librosRentados.Add(rentaViewModel);
+                    }
+                }
+
+                return View(librosRentados);
+            }
+            else
+            {
+                // Manejar el caso en el que no se pueda obtener el ID de usuario
+                return RedirectToAction("Index", new { error = "No se pudo obtener el ID de usuario." });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AgregarPrestamo(int idLibro)
+        {
+
+            // Obtener el nombre de usuario del Claim
+            var nombreUsuario = User.Identity.Name;
+
+            // Obtener el ID de usuario utilizando el servicio ServicePrestamos
+            int? idUsuario = await _servicePrestamos.ObtenerIdUsuarioPorNombre(nombreUsuario);
+
+            if (idUsuario.HasValue)
+            {
+                // Agregar el préstamo del libro para el usuario actual
+                bool rentaExitosa = await _servicePrestamos.AgregarPrestamo(idUsuario.Value, idLibro);
+
+                if (rentaExitosa)
+                {
+                    // Si la renta es exitosa, redirigir a la vista de libros rentados
+                    return RedirectToAction("LibrosRentados");
+                }
+                else
+                {
+                    // En caso de que falle la renta, puedes manejar el error de alguna manera
+                    return RedirectToAction("Index", new { error = "Hubo un error al rentar el libro." });
+                }
+            }
+            else
+            {
+                // Manejar el caso en el que no se pueda obtener el ID de usuario
+                return RedirectToAction("Index", new { error = "No se pudo obtener el ID de usuario." });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DevolverLibro(int idLibro)
+        {
+            // Obtener el nombre de usuario del Claim
+            var nombreUsuario = User.Identity.Name;
+
+            // Obtener el ID de usuario utilizando el servicio ServicePrestamos
+            int? idUsuario = await _servicePrestamos.ObtenerIdUsuarioPorNombre(nombreUsuario);
+
+            if (idUsuario.HasValue)
+            {
+                // Aquí debes agregar la lógica para devolver el libro rentado utilizando el servicio ServicePrestamos
+                // Llama al método correspondiente para devolver el préstamo del libro
+
+                // Por ejemplo, podrías llamar a un método llamado DevolverPrestamoPorNombreUsuario
+                bool devolucionExitosa = await _servicePrestamos.DevolverPrestamoPorNombreUsuario(nombreUsuario, idLibro);
+
+                if (devolucionExitosa)
+                {
+                    // Si la devolución es exitosa, redirigir a la vista de libros rentados
+                    return RedirectToAction("LibrosRentados");
+                }
+                else
+                {
+                    // En caso de que falle la devolución, puedes manejar el error de alguna manera
+                    return RedirectToAction("Index", new { error = "Hubo un error al devolver el libro." });
+                }
+            }
+            else
+            {
+                // Manejar el caso en el que no se pueda obtener el ID de usuario
+                return RedirectToAction("Index", new { error = "No se pudo obtener el ID de usuario." });
+            }
+        }
+
+
 
 
 

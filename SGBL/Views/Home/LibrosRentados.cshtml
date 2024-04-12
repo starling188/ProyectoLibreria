@@ -1,0 +1,52 @@
+﻿@model List<SGBL.Models.RentasViewModel>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Libros Rentados</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
+</head>
+<body>
+
+    <div class="container-fluid">
+        <h1>Libros Rentados</h1>
+
+        <div class="row">
+            @if (Model == null || Model.Count == 0)
+            {
+                <h2>No hay libros rentados.</h2>
+            }
+            else
+            {
+                @foreach (var libro in Model)
+                {
+                    <div class="col-4 mb-4">
+                        <div class="card shadow-sn">
+                            <div class="card-body">
+                                <!-- Formulario para enviar el ID del libro -->
+                                <form method="post" asp-action="DevolverLibro">
+                                    <!-- Campo de entrada oculto para el IdLibro -->
+                                    <input type="hidden" name="idLibro" value="@libro.IdLibro" />
+
+                                    <!-- Mostrar el título del libro -->
+                                    <h5 class="card-title">@libro.Titulo</h5>
+
+                                    <!-- Botón para devolver el libro -->
+                                    <button type="submit" class="btn btn-danger">Devolver</button>
+
+                                    <!-- Botón para ver detalles (puedes dejarlo así como está) -->
+                                    <a href="#" class="btn btn-primary">Detalles</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+</body>
+</html>

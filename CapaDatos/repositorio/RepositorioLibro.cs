@@ -74,5 +74,8 @@ namespace CapaDatos.repositorio
                 .Include(libro => libro.IdGeneroNavigation)
                 .ToListAsync();
         }
+
+       
+
     }
 }

@@ -65,6 +65,30 @@
         }
 
     </script>
+
+    <script>
+        function rentarLibro(libroId) {
+            fetch('@Url.Action("AgregarPrestamo", "Home")?idLibro=' + libroId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Renta exitosa, redirigir al usuario a la vista de libros rentados
+                        window.location.href = '@Url.Action("LibrosRentados", "Home")';
+                    } else {
+                        // Manejar errores si la renta no fue exitosa
+                        console.error('Error al rentar el libro');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        }
+    </script>
+
 </head>
 <body>
 
@@ -103,10 +127,14 @@
                                 <p class="card-text">Sinopsis: @(string.IsNullOrEmpty(libro.Sinopsis) ? "N/A" : libro.Sinopsis)</p>
                                 <p class="card-text">Disponibilidad: @(libro.Disponibilidad.HasValue ? (libro.Disponibilidad.Value ? "Si" : "No Disponible") : "N/A")</p>
 
+                                <button type="button" class="btn btn-success" onclick="rentarLibro(@libro.IdLibro)">Rentar</button>
+
+
                                 <div class="mt-2 btn-group" role="group" aria-label="Botones" style="display: none;">
                                     <!-- Establecer inicialmente los botones como ocultos -->
                                     <button type="button" class="btn btn-danger mr-1" data-id="@libro.IdLibro">Eliminar</button>
                                     <button type="button" class="btn btn-primary" data-id="@libro.IdLibro">Editar</button>
+
                                 </div>
                             </div>
                         </div>

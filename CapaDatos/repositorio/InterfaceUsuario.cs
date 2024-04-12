@@ -16,5 +16,7 @@ namespace CapaDatos.repositorio
         Task<string> HashearContraseña(string contraseña);
 
         Task<string> ObtenerNombreRol(int idRol);
+
+        Task<Usuario> ObtenerUsuarioPorNombre(string nombreUsuario);
     }
 }

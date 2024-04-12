@@ -34,6 +34,9 @@ builder.Services.AddScoped<IServiceAutor, ServiceAutor>();
 //genero
 builder.Services.AddScoped<InterfaceGeneros, RepositorioGeneros>();
 builder.Services.AddScoped<IServiceGenero, ServiceGenero>();
+//prestamos
+builder.Services.AddScoped<InterfacePrestamos, RepositorioPrestamos>();
+builder.Services.AddScoped<IServicePrestamos,  ServicePrestamos>();
 
 var app = builder.Build();
 

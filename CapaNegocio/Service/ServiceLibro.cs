@@ -1,5 +1,6 @@
 ﻿using CapaDatos.DataContext;
 using CapaDatos.repositorio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,8 @@ namespace CapaNegocio.Service
             // Obtener una consulta IQueryable para los libros
             return await _libro.ObtenerTodos();
         }
+
+
 
     }
 }
