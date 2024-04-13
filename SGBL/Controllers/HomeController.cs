@@ -1,4 +1,5 @@
 using CapaDatos.DataContext;
+using CapaDatos.ViewModels;
 using CapaNegocio.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -307,7 +308,26 @@ namespace SGBL.Controllers
             }
         }
 
+        [Authorize(Roles ="Admin")]
+        [HttpGet]
+        public async Task<IActionResult> TodosLosPrestamos()
+        {
+            // Obtener todos los préstamos utilizando el servicio ServicePrestamos
+            var prestamos = await _servicePrestamos.ObtenerTodosLosPrestamos();
 
+            // Convertir los préstamos a PrestamoViewModel
+            var prestamosViewModel = prestamos.Select(p => new PrestamoViewModel
+            {
+                IdPrestamo = p.IdPrestamo,
+                NombreUsuario = p.IdUsuarioNavigation?.Nombre,
+                TituloLibro = p.IdLibroNavigation?.Titulo,
+                FechaPrestamo = p.FechaPrestamo,
+                FechaDevolucion = p.FechaDevolucion,
+                EstadoPrestamo = p.EstadoPrestamo
+            }).ToList();
+
+            return View(prestamosViewModel);
+        }
 
 
 

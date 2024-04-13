@@ -101,6 +101,25 @@ namespace CapaDatos.repositorio
             }
         }
 
+        public async Task<List<Prestamo>> ObtenerTodosLosPrestamos()
+        {
+            try
+            {
+                // Obtener todos los préstamos con sus datos relacionados (usuarios y libros)
+                var prestamos = await _contexto.Prestamos
+                    .Include(p => p.IdUsuarioNavigation)
+                    .Include(p => p.IdLibroNavigation)
+                    .ToListAsync();
+
+                return prestamos;
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción que pueda ocurrir durante la obtención de los préstamos
+                Console.WriteLine($"Error al obtener los préstamos: {ex.Message}");
+                return new List<Prestamo>(); // Devolver una lista vacía en caso de error
+            }
+        }
 
 
 

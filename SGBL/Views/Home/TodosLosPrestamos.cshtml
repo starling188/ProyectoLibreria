@@ -1,0 +1,55 @@
+﻿@model List<CapaDatos.ViewModels.PrestamoViewModel>
+
+@{
+    ViewData["Title"] = "Todos los Préstamos";
+}
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/SGBL.styles.css" asp-append-version="true" />
+
+<div class="container mt-5">
+    <div class="titulo-fondo">
+        <h1 class="text-center">Todos los Préstamos</h1>
+    </div>
+    <div class="card-principal">
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre de Usuario</th>
+                        <th scope="col">Título del Libro</th>
+                        <th scope="col">Fecha de Préstamo</th>
+                        <th scope="col">Fecha de Devolución</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var prestamo in Model)
+                    {
+                        <tr>
+                            <th scope="row">@prestamo.IdPrestamo</th>
+                            <td>@prestamo.NombreUsuario</td>
+                            <td>@prestamo.TituloLibro</td>
+                            <td>@(prestamo.FechaPrestamo.HasValue ? prestamo.FechaPrestamo.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                            <td>@(prestamo.FechaDevolucion.HasValue ? prestamo.FechaDevolucion.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                            <td>
+                                @if (prestamo.EstadoPrestamo == "Prestado")
+                                {
+                                    <span class="badge bg-danger">@prestamo.EstadoPrestamo</span>
+                                }
+                                else if (prestamo.EstadoPrestamo == "Devuelto")
+                                {
+                                    <span class="badge bg-success">@prestamo.EstadoPrestamo</span>
+                                }
+                                else
+                                {
+                                    @prestamo.EstadoPrestamo
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

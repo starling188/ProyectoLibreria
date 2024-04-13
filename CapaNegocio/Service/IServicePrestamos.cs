@@ -9,7 +9,7 @@ namespace CapaNegocio.Service
 {
     public interface IServicePrestamos
     {
-
+        Task<List<Prestamo>> ObtenerTodosLosPrestamos();
         Task<bool> DevolverPrestamoPorNombreUsuario(string nombreUsuario, int idLibro);
         Task<bool> AgregarPrestamo(int idUsuario, int idLibro);
         Task<int?> ObtenerIdUsuarioPorNombre(string nombreUsuario);

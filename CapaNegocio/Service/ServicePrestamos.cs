@@ -94,8 +94,10 @@ namespace CapaNegocio.Service
                 }
             }
 
-
-
+            public async Task<List<Prestamo>> ObtenerTodosLosPrestamos()
+            {
+               return await _prestamosLibros.ObtenerTodosLosPrestamos();
+            }
     }
 
 }
