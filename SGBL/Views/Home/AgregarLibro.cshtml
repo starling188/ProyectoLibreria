@@ -1,8 +1,10 @@
 ﻿@model SGBL.Models.ViewModelLibro
 
-@{
-    ViewData["Title"] = "Agregar Nuevo Libro";
-}
+
+   <div class="titulo-fondo">
+            <h1 class="text-center">Agregar Libro</h1>
+   </div>
+
 
 <h1>@ViewData["Title"]</h1>
 
@@ -11,113 +13,133 @@
     var autores = Model.Autores;
     var generos = Model.Generos;
 }
-
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-6">
-        <form id="formAgregarLibro" asp-action="AgregarLibro">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Titulo" class="control-label">Título del Libro</label>
-                <input asp-for="Titulo" class="form-control" placeholder="Ingrese el título del libro" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PalabrasClave" class="control-label">Palabras Clave</label>
-                <input asp-for="PalabrasClave" class="form-control" placeholder="Ingrese palabras clave" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Sinopsis" class="control-label">Sinopsis</label>
-                <textarea asp-for="Sinopsis" class="form-control" placeholder="Ingrese la sinopsis"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="IdAutor" class="control-label">Autor</label>
-                <div class="input-group">
-                    <select asp-for="IdAutor" class="form-control">
-                        <option value="">Seleccionar Autor</option>
-                        @foreach (var autor in Model.Autores)
-                        {
-                            <option value="@autor.IdAutor">@autor.Nombre</option>
-                        }
-                    </select>
-                    <div class="input-group-append">
-                        <a href="AgregarAutor" class="btn btn-sm btn-primary ml-2">Crear Nuevo Autor</a>
+        <div class="card-principal">
+            <div class="card-body">
+                <form id="formAgregarLibro" asp-action="AgregarLibro">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Titulo" class="control-label">Título del Libro</label>
+                        <input asp-for="Titulo" class="form-control" placeholder="Ingrese el título del libro" />
+                        <span asp-validation-for="Titulo" class="text-danger"></span>
                     </div>
-                </div>
-                <span asp-validation-for="IdAutor" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="IdGenero" class="control-label">Género</label>
-                <div class="input-group">
-                    <select asp-for="IdGenero" class="form-control">
-                        <option value="">Seleccionar Género</option>
-                        @foreach (var genero in Model.Generos)
-                        {
-                            <option value="@genero.IdGenero">@genero.Nombre</option>
-                        }
-                    </select>
-                    <div class="input-group-append">
-                        <a href="AgregarGenero" class="btn btn-sm btn-primary ml-2">Crear Nuevo Género</a>
+                    <div class="form-group">
+                        <label asp-for="PalabrasClave" class="control-label">Palabras Clave</label>
+                        <input asp-for="PalabrasClave" class="form-control" placeholder="Ingrese palabras clave" />
                     </div>
-                </div>
-                <span asp-validation-for="IdGenero" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+                    <div class="form-group">
+                        <label asp-for="Sinopsis" class="control-label">Sinopsis</label>
+                        <textarea asp-for="Sinopsis" class="form-control" placeholder="Ingrese la sinopsis"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="IdAutor" class="control-label">Autor</label>
+                        <div class="input-group">
+                            <select asp-for="IdAutor" class="form-control">
+                                <option value="">Seleccionar Autor</option>
+                                @foreach (var autor in Model.Autores)
+                                {
+                                    <option value="@autor.IdAutor">@autor.Nombre</option>
+                                }
+                            </select>
+                            <div class="input-group-append">
+                                <a href="AgregarAutor" class="btn btn-sm btn-primary ml-2">Crear Nuevo Autor</a>
+                            </div>
+                        </div>
+                        <span asp-validation-for="IdAutor" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="IdGenero" class="control-label">Género</label>
+                        <div class="input-group">
+                            <select asp-for="IdGenero" class="form-control">
+                                <option value="">Seleccionar Género</option>
+                                @foreach (var genero in Model.Generos)
+                                {
+                                    <option value="@genero.IdGenero">@genero.Nombre</option>
+                                }
+                            </select>
+                            <div class="input-group-append">
+                                <a href="AgregarGenero" class="btn btn-sm btn-primary ml-2">Crear Nuevo Género</a>
+                            </div>
+                        </div>
+                        <span asp-validation-for="IdGenero" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Precio" class="control-label">Precio</label>
+                        <input asp-for="Precio" class="form-control" placeholder="Ingrese el precio del libro" />
+                        <span asp-validation-for="Precio" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Guardar" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div id="alertaExito" class="alert alert-success" style="display: none;">
-    El formulario se envió exitosamente.
+        <div id="alertaExito" class="alert alert-success" style="display: none;">
+            El formulario se envió exitosamente.
+        </div>
+
+        <div id="alertaError" class="alert alert-danger" style="display: none;">
+            Por favor, complete los campos de título, Autor y Género
+        </div>
+
+        <script>
+            document.getElementById("formAgregarLibro").addEventListener("submit", function (event) {
+                var titulo = document.getElementById("Titulo").value;
+                var autor = document.getElementById("IdAutor").value;
+                var genero = document.getElementById("IdGenero").value;
+
+                if (titulo.trim() === "" || autor.trim() === "" || genero.trim() === "") {
+                    event.preventDefault(); // Evitar el envío del formulario
+                    document.getElementById("alertaError").style.display = "block";
+                } else {
+                    document.getElementById("alertaError").style.display = "none";
+                    document.getElementById("alertaExito").style.display = "block";
+                }
+            });
+        </script>
+    </div>
 </div>
 
-<div id="alertaError" class="alert alert-danger" style="display: none;">
-    Por favor, complete los campos de titulo, Autor y Genero
+        <style>
+            /* Estilos para el placeholder */
+            input::placeholder {
+                color: #6c757d; /* Color de texto del placeholder */
+                font-style: italic; /* Texto en cursiva */
+            }
+
+            /* Estilos personalizados */
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .input-group-append {
+                margin-left: 10px;
+            }
+
+            .ml-2 {
+                margin-left: 10px; /* Separación adicional del botón */
+            }
+
+            #alertaExito {
+                margin-top: 10px;
+            }
+
+            .card-principal {
+                background-color: #ffffff; /* Fondo blanco */
+                border-radius: 10px; /* Bordes redondeados */
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Sombra */
+                padding: 20px; /* Espacio interno */
+            }
+        </style>
+    </div>
 </div>
-
-<script>
-    document.getElementById("formAgregarLibro").addEventListener("submit", function (event) {
-        var titulo = document.getElementById("Titulo").value;
-        var autor = document.getElementById("IdAutor").value;
-        var genero = document.getElementById("IdGenero").value;
-
-        if (titulo.trim() === "" || autor.trim() === "" || genero.trim() === "") {
-            event.preventDefault(); // Evitar el envío del formulario
-            document.getElementById("alertaError").style.display = "block";
-        } else {
-            document.getElementById("alertaError").style.display = "none";
-            document.getElementById("alertaExito").style.display = "block";
-        }
-    });
-</script>
-
-<style>
-    /* Estilos para el placeholder */
-    input::placeholder {
-        color: #6c757d; /* Color de texto del placeholder */
-        font-style: italic; /* Texto en cursiva */
-    }
-
-    /* Estilos personalizados */
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .input-group-append {
-        margin-left: 10px;
-    }
-
-    .ml-2 {
-        margin-left: 10px; /* Separación adicional del botón */
-    }
-
-    #alertaExito {
-        margin-top: 10px;
-    }
-</style>

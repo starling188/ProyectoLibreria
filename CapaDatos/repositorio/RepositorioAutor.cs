@@ -73,7 +73,13 @@ namespace CapaDatos.repositorio
             return await _context.Autors.ToListAsync();
         }
 
-        
+
+        public async Task<int?> ObtenerIdPorNombre(string nombre)
+        {
+            var autor = await _context.Autors.FirstOrDefaultAsync(a => a.Nombre == nombre);
+            return autor?.IdAutor;
+        }
+
     }
 }
 

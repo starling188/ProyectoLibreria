@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CapaDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class IdColumna : Migration
+    public partial class ColumnaPrecio : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

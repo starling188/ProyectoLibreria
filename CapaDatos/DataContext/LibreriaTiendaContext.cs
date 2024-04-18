@@ -37,12 +37,6 @@ public partial class LibreriaTiendaContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
 
-        if (!optionsBuilder.IsConfigured)
-        {
-            // Configuración del proveedor de base de datos aquí (por ejemplo, SQL Server, SQLite, etc.)
-            optionsBuilder.UseSqlServer("Server=STARLING\\SQLEXPRESS;Database=LibreriaTienda;Integrated Security=true;TrustServerCertificate=true");
-        }
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -132,6 +126,7 @@ public partial class LibreriaTiendaContext : DbContext
             entity.Property(e => e.Titulo)
                 .HasMaxLength(255)
                 .IsUnicode(false);
+            entity.Property(e => e.Precio).HasColumnType("decimal(10, 2)"); // Agregamos la propiedad para el precio
 
             entity.HasOne(d => d.IdAutorNavigation).WithMany(p => p.Libros)
                 .HasForeignKey(d => d.IdAutor)

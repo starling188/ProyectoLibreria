@@ -1,5 +1,5 @@
+
 using CapaDatos.DataContext;
-using CapaDatos.ViewModels;
 using CapaNegocio.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +17,16 @@ namespace SGBL.Controllers
         private readonly IServiceGenero _serviceGenero;
         private readonly IServiceAutor _serviceAutor;
         private readonly IServicePrestamos _servicePrestamos;
+        private readonly IServiceReserva _serviceReserva;
 
-        public HomeController(ILogger<HomeController> logger, IServiceLibro serviceLibro, IServiceGenero serviceGenero, IServiceAutor serviceAutor, IServicePrestamos servicePrestamos)
+        public HomeController(ILogger<HomeController> logger, IServiceLibro serviceLibro, IServiceGenero serviceGenero, IServiceAutor serviceAutor, IServicePrestamos servicePrestamos , IServiceReserva serviceReserva)
         {
             _logger = logger;
             _ser = serviceLibro;
             _serviceGenero = serviceGenero;
             _serviceAutor = serviceAutor;
-           _servicePrestamos = servicePrestamos;
+            _servicePrestamos = servicePrestamos;
+            _serviceReserva = serviceReserva;
         }
 
         public async Task<IActionResult> Index()
@@ -98,7 +100,6 @@ namespace SGBL.Controllers
             return View(nuevoAutor);
         }
 
-
         [Authorize(Roles ="Admin")]
         public IActionResult AgregarGenero()
         {
@@ -130,8 +131,6 @@ namespace SGBL.Controllers
             return View(nuevoGenero);
         }
 
-
-        
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AgregarLibro()
         {
@@ -142,7 +141,6 @@ namespace SGBL.Controllers
             };
             return View(viewModel);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> AgregarLibro(ViewModelLibro nuevoLibro)
@@ -156,7 +154,8 @@ namespace SGBL.Controllers
                     IdAutor = nuevoLibro.IdAutor,
                     IdGenero = nuevoLibro.IdGenero,
                     PalabrasClave = nuevoLibro.PalabrasClave,
-                    Sinopsis = nuevoLibro.Sinopsis
+                    Sinopsis = nuevoLibro.Sinopsis,
+                    Precio = nuevoLibro.Precio
                 };
 
                 // Intentar agregar el nuevo libro utilizando el servicio
@@ -178,7 +177,6 @@ namespace SGBL.Controllers
             return View(nuevoLibro);
         }
 
-
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EliminarLibros(int Idlibro)
         {
@@ -193,7 +191,6 @@ namespace SGBL.Controllers
                 return RedirectToAction("Index", new { error = "Hubo un error al eliminar el libro." });
             }
         }
-
 
         [HttpGet]
         public async Task<IActionResult> LibrosRentados()
@@ -237,7 +234,6 @@ namespace SGBL.Controllers
                 return RedirectToAction("Index", new { error = "No se pudo obtener el ID de usuario." });
             }
         }
-
 
         [HttpPost]
         public async Task<IActionResult> AgregarPrestamo(int idLibro)
@@ -329,8 +325,103 @@ namespace SGBL.Controllers
             return View(prestamosViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditarLibro(int id)
+        {
+            var libro = await _ser.ObtenerPorId(id);
+             // Reemplaza con el método adecuado para obtener los géneros
+
+            if (libro == null)
+            {
+                return NotFound("Libro no encontrado");
+            }
+
+          
+
+            return View("EditarLibro", libro);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarDisponibilidad(int idLibro, bool disponibilidad, decimal precio)
+        {
+            var libro = await _ser.ObtenerPorId(idLibro);
+
+            if (libro == null)
+            {
+                return NotFound("Libro no encontrado");
+            }
+
+            libro.Disponibilidad = disponibilidad;
+            libro.Precio = precio;  // Actualiza el precio del libro
+
+            bool actualizacionExitosa = await _ser.ActualizarLibro(libro);
+
+            if (actualizacionExitosa)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Hubo un error al actualizar la disponibilidad del libro.");
+                return View("EditarLibro", libro);
+            }
+        }
 
 
+        [HttpGet]
+        public async Task<IActionResult> ReservasUsuario()
+        {
+            var nombreUsuario = User.Identity.Name;
+            var idUsuario = await _servicePrestamos.ObtenerIdUsuarioPorNombre(nombreUsuario);
+
+            if (idUsuario.HasValue)
+            {
+                var reservas = await _serviceReserva.ObtenerReservasPorUsuario(idUsuario.Value);
+                return View(reservas);
+            }
+
+            return RedirectToAction("Index", new { error = "No se pudo obtener el ID de usuario." });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ReservarLibro(int idLibro)
+        {
+            var nombreUsuario = User.Identity.Name;
+            var idUsuario = await _servicePrestamos.ObtenerIdUsuarioPorNombre(nombreUsuario);
+
+            if (idUsuario.HasValue)
+            {
+                var exitoso = await _serviceReserva.ReservarLibro(idUsuario.Value, idLibro);
+
+                if (exitoso)
+                {
+                    return RedirectToAction("ReservasUsuario");
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { error = "Hubo un error al reservar el libro." });
+                }
+            }
+
+            return RedirectToAction("Index", new { error = "No se pudo obtener el ID de usuario." });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CancelarReserva(int idReserva)
+        {
+            var exitoso = await _serviceReserva.CancelarReserva(idReserva);
+
+            if (exitoso)
+            {
+                return RedirectToAction("ReservasUsuario");
+            }
+            else
+            {
+                return RedirectToAction("Index", new { error = "Hubo un error al cancelar la reserva." });
+            }
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

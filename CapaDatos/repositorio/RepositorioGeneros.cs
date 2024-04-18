@@ -71,5 +71,13 @@ namespace CapaDatos.repositorio
         {
             return await _context.Generos.ToListAsync();
         }
+
+
+        public async Task<int?> ObtenerIdPorNombre(string nombre)
+        {
+            var genero = await _context.Generos.FirstOrDefaultAsync(g => g.Nombre == nombre);
+            return genero?.IdGenero;
+        }
+
     }
 }

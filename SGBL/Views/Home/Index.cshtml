@@ -12,7 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/styles.css" /> <!-- Agrega el archivo CSS externo -->
+     <!-- Agrega el archivo CSS externo -->
+
     <script>
         // Función para mostrar u ocultar los botones según el rol del usuario
         function mostrarBotonesSegunRol(isAdmin) {
@@ -63,8 +64,32 @@
                     console.error('Error de red:', error);
                 });
         }
-
+        function editarLibro(libroId) {
+            fetch('@Url.Action("EditarLibro", "Home")?id=' + libroId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Redirigir al usuario a la vista de edición del libro
+                        window.location.href = '@Url.Action("EditarLibro", "Home")?id=' + libroId;
+                    } else {
+                        // Manejar errores si la solicitud no fue exitosa
+                        console.error('Error al editar el libro');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        }
+        
     </script>
+
+    
+
+
 
     <script>
         function rentarLibro(libroId) {
@@ -89,21 +114,49 @@
         }
     </script>
 
+    <script>
+        // ... (resto de las funciones JavaScript) ...
+
+        function reservarLibro(libroId) {
+            fetch('@Url.Action("ReservarLibro", "Home")?idLibro=' + libroId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Reserva exitosa, redirigir al usuario a la vista de reservas del usuario
+                        window.location.href = '@Url.Action("ReservasUsuario", "Home")';
+                    } else {
+                        // Manejar errores si la reserva no fue exitosa
+                        console.error('Error al reservar el libro');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        }
+    </script>
+   
+
 </head>
 <body>
 
     <div class="container-fluid">
-        <h1>Lista de Libros</h1>
+        <div class="titulo-fondo">
+            <h1 class="text-center">Todos Los Libros de SGBL</h1>
+        </div>
 
         <div class="mb-4">
             <!-- Barra de búsqueda -->
-            <form method="post" action="@Url.Action("Buscar", "Home")">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Buscar libros" name="criterio" aria-label="Buscar libros" aria-describedby="button-buscar">
-                    <div class="input-group-append mr-4">
-                        <!-- Añadir margen derecho -->
-                        <button class="btn btn-primary" type="submit" id="button-buscar">Buscar</button>
-                    </div>
+            <form method="post" action="@Url.Action("Buscar", "Home")" class="d-flex">
+                <div class="input-group mb-3 mr-2">
+                    <input type="text" class="form-control col-4" placeholder="Buscar libros" name="criterio" aria-label="Buscar libros" aria-describedby="button-buscar">
+                </div>
+                <!-- Botón de búsqueda -->
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit" id="button-buscar" style="margin-left: 10px;">Buscar</button>
                 </div>
             </form>
         </div>
@@ -120,20 +173,28 @@
                     <div class="col-4 mb-4">
                         <div class="card shadow-sn">
                             <div class="card-body">
+
+
+
+                             
                                 <h5 class="card-title">@libro.Titulo</h5>
                                 <p class="card-text">Autor: @(libro.IdAutorNavigation != null ? libro.IdAutorNavigation.Nombre : "Desconocido")</p>
                                 <p class="card-text">Género: @(libro.IdGeneroNavigation != null ? libro.IdGeneroNavigation.Nombre : "Desconocido")</p>
                                 <p class="card-text">Palabras Clave: @(string.IsNullOrEmpty(libro.PalabrasClave) ? "N/A" : libro.PalabrasClave)</p>
                                 <p class="card-text">Sinopsis: @(string.IsNullOrEmpty(libro.Sinopsis) ? "N/A" : libro.Sinopsis)</p>
                                 <p class="card-text">Disponibilidad: @(libro.Disponibilidad.HasValue ? (libro.Disponibilidad.Value ? "Si" : "No Disponible") : "N/A")</p>
+                                <p class="card-text">Precio: @(libro.Precio.HasValue ? libro.Precio.Value.ToString("C2") : "N/A")</p>
 
                                 <button type="button" class="btn btn-success" onclick="rentarLibro(@libro.IdLibro)">Rentar</button>
-
+                                <button type="button" class="btn btn-primary" onclick="reservarLibro(@libro.IdLibro)">Reservar</button>
 
                                 <div class="mt-2 btn-group" role="group" aria-label="Botones" style="display: none;">
                                     <!-- Establecer inicialmente los botones como ocultos -->
                                     <button type="button" class="btn btn-danger mr-1" data-id="@libro.IdLibro">Eliminar</button>
-                                    <button type="button" class="btn btn-primary" data-id="@libro.IdLibro">Editar</button>
+                                    <button type="button" class="btn btn-primary" onclick="editarLibro(@libro.IdLibro)">Editar</button>
+
+
+
 
                                 </div>
                             </div>
@@ -143,6 +204,8 @@
             }
         </div>
     </div>
+   
+
 
 </body>
 </html>

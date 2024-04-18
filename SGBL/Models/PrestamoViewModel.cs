@@ -1,4 +1,4 @@
-﻿namespace CapaDatos.ViewModels
+﻿namespace SGBL.Models
 {
     public class PrestamoViewModel
     {

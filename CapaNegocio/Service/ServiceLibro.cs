@@ -23,6 +23,7 @@ namespace CapaNegocio.Service
             _serviceAutor = serviceAutor;
             _serviceGenero = serviceGenero;
         }
+
         public async Task<bool> ActualizarLibro(Libro libro)
         {
             return await _libro.ActualizarLibro(libro);
@@ -46,6 +47,7 @@ namespace CapaNegocio.Service
                     libro.PalabrasClave.Contains(criterio))
                 .ToList();
         }
+
         public async Task<bool> EliminarLibro(int id)
         {
             return await _libro.EliminarLibro(id);

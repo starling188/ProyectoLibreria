@@ -15,7 +15,7 @@ public partial class Reserva
 
     public string? EstadoReserva { get; set; }
 
-    public virtual Libro? IdLibroNavigation { get; set; }
+    public  Libro? IdLibroNavigation { get; set; }
 
     public virtual Usuario? IdUsuarioNavigation { get; set; }
 }

@@ -16,6 +16,6 @@ namespace CapaDatos.repositorio
         Task<bool> ActualizarAutor(Autor autor);
         Task<bool> EliminarAutor(int id);
 
-
+        Task<int?> ObtenerIdPorNombre(string nombre);
     }
 }

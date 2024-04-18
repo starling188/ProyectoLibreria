@@ -1,0 +1,94 @@
+﻿@model List<CapaDatos.DataContext.Reserva>
+
+@{
+    ViewData["Title"] = "Mis Reservas";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Agrega el archivo CSS externo aquí si es necesario -->
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="titulo-fondo">
+            <h1 class="text-center">Mis Reservas</h1>
+        </div>
+
+        <div class="row">
+            @if (Model == null || Model.Count == 0)
+            {
+                <h2>No tienes libros reservados actualmente.</h2>
+            }
+            else
+            {
+                @foreach (var reserva in Model)
+                {
+                    <div class="col-4 mb-4">
+                        <div class="card shadow-sn">
+                            <div class="card-body">
+                                <h5 class="card-title">@((reserva.IdLibroNavigation?.Titulo ?? "Sin título"))</h5>
+                                <p class="card-text">Fecha de Reserva: @reserva.FechaReserva?.ToString("dd/MM/yyyy")</p>
+                                <p class="card-text">Estado: @reserva.EstadoReserva</p>
+
+                                <button type="button" class="btn btn-danger" onclick="cancelarReserva(@reserva.IdReserva)">Cancelar Reserva</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <script>
+        function cancelarReserva(reservaId) {
+            fetch('@Url.Action("CancelarReserva", "Home")?idReserva=' + reservaId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Cancelación de reserva exitosa, recargar la página para reflejar los cambios
+                        window.location.reload();
+                    } else {
+                        // Manejar errores si la cancelación no fue exitosa
+                        console.error('Error al cancelar la reserva');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        }
+    </script>
+    <script>
+        function cancelarReserva(reservaId) {
+            fetch('@Url.Action("CancelarReserva", "Home")?idReserva=' + reservaId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Cancelación de reserva exitosa, recargar la página para reflejar los cambios
+                        window.location.reload();
+                    } else {
+                        // Manejar errores si la cancelación no fue exitosa
+                        console.error('Error al cancelar la reserva');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>

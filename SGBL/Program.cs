@@ -37,6 +37,9 @@ builder.Services.AddScoped<IServiceGenero, ServiceGenero>();
 //prestamos
 builder.Services.AddScoped<InterfacePrestamos, RepositorioPrestamos>();
 builder.Services.AddScoped<IServicePrestamos,  ServicePrestamos>();
+//Reserva
+builder.Services.AddScoped<InterfaceReservas, RepositorioReservas>();
+builder.Services.AddScoped<IServiceReserva, ServiceReserva>();
 
 var app = builder.Build();
 

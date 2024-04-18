@@ -32,6 +32,11 @@ namespace CapaNegocio.Service
             return await _genero.EliminarGenero(id);
         }
 
+        public async Task<int?> ObtenerIdPorNombre(string nombre)
+        {
+            return await _genero.ObtenerIdPorNombre(nombre);
+        }
+
         public async Task<Genero> ObtenerPorId(int id)
         {
             return await _genero.ObtenerPorId(id);

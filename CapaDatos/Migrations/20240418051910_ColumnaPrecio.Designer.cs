@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CapaDatos.Migrations
 {
     [DbContext(typeof(LibreriaTiendaContext))]
-    [Migration("20240305053554_IdColumna")]
-    partial class IdColumna
+    [Migration("20240418051910_ColumnaPrecio")]
+    partial class ColumnaPrecio
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

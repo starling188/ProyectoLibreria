@@ -32,14 +32,24 @@ namespace CapaNegocio.Service
             return await _autor.EliminarAutor(id);
         }
 
-        public async Task<Autor> ObtenerPorId(int id)
+     
+        public async Task<int?> ObtenerIdPorNombre(string nombre)
         {
-            return await _autor.ObtenerPorId(id);
+            return await _autor.ObtenerIdPorNombre(nombre);
+        }
+
+        public Task<Autor> ObtenerPorId(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<List<Autor>> ObtenerTodos()
         {
             return await _autor.ObtenerTodos();
         }
+
+
+
+
     }
 }

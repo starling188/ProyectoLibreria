@@ -64,7 +64,10 @@ namespace CapaDatos.repositorio
 
         public async Task<Libro> ObtenerPorId(int id)
         {
-            return await _context.Libros.FindAsync(id);
+                return await _context.Libros
+           .Include(l => l.IdAutorNavigation)
+           .Include(l => l.IdGeneroNavigation)
+           .FirstOrDefaultAsync(l => l.IdLibro == id);
         }
 
         public async Task<List<Libro>> ObtenerTodos()

@@ -20,6 +20,8 @@ namespace SGBL.Models
 
         public string Sinopsis { get; set; }
 
+        public decimal? Precio { get; set; } // 
+
         public bool? Disponibilidad { get; set; }
 
         public List<Autor> Autores { get; set; } = new List<Autor>();

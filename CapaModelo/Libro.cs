@@ -21,6 +21,9 @@ public partial class Libro
 
     public DateTime? FechaRegistro { get; set; }
 
+    public decimal? Precio { get; set; } // Nueva propiedad para el precio
+
+
     public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
     public virtual ICollection<HistorialTransaccione> HistorialTransacciones { get; set; } = new List<HistorialTransaccione>();

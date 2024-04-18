@@ -14,5 +14,7 @@ namespace CapaDatos.repositorio
         Task<bool> AgregarGenero(Genero autor);
         Task<bool> ActualizarGenero(Genero autor);
         Task<bool> EliminarGenero(int id);
+
+        Task<int?> ObtenerIdPorNombre(string nombre);
     }
 }
