@@ -1,8 +1,6 @@
 ﻿using CapaNegocio.Service;
 using Microsoft.AspNetCore.Mvc;
 using SGBL.Models;
-
-
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
